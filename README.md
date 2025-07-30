@@ -29,14 +29,13 @@ This project is a simple system to register and manage people (name and age), de
 ---
 
 ## ▶️ Como Rodar (Português)
-
-1. Clone o repositório:  
+  
 ```bash
 git clone https://github.com/Ferigoti/Cli-people-register 
 
 cd Cli-people-register 
 
-python Sistema/main.py
+python main.py
 ```
 
 ## ▶️ How to Run (English)
@@ -45,14 +44,16 @@ git clone https://github.com/Ferigoti/Cli-people-register
 
 cd Cli-people-register 
 
-python Sistema/main.py
+python main.py
 ```
 
 📖 Créditos / Credits
+
 Este projeto foi desenvolvido durante o curso de Python do Gustavo Guanabara (Curso em Vídeo) e posteriormente melhorado por mim.
 
 This project was developed during the Python course by Gustavo Guanabara (Curso em Vídeo) and later improved by me.
 
 🤝 Contato / Contact
+
 Fique à vontade para sugerir melhorias ou fazer perguntas!
 Feel free to suggest improvements or ask questions!
