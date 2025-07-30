@@ -1,0 +1,8 @@
+joão;35
+josé;40
+Juliane;24
+Marcos;20
+Ferigoti;89
+Lucas;24
+antonio;20
+Matheus;23
