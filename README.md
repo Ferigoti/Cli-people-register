@@ -34,11 +34,7 @@ This project is a simple system to register and manage people (name and age), de
 ```bash
 git clone https://github.com/Ferigoti/Cli-people-register 
 
-<<<<<<< HEAD
 cd Cli-people-register 
-=======
-cd Cli-people-register
->>>>>>> 13362d0e4442b754ff5583ec3823d081c82aa894
 
 python Sistema/main.py
 ```
