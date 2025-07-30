@@ -2,7 +2,7 @@ from Sistema.library.interface import *
 from Sistema.library.arquivo import *
 from time import sleep
 
-arq = 'Cadastros.txt'
+arq = 'Sistema/Cadastros.txt'
 
 if not arquivoexiste(arq):
     criararquivo(arq)

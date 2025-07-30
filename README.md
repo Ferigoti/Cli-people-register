@@ -34,7 +34,7 @@ This project is a simple system to register and manage people (name and age), de
 ```bash
 git clone https://github.com/Ferigoti/Cli-people-register 
 
-cd people-register
+cd Cli-people-register 
 
 python Sistema/main.py
 ```
@@ -43,7 +43,7 @@ python Sistema/main.py
 ```bash
 git clone https://github.com/Ferigoti/Cli-people-register
 
-cd people-register
+cd Cli-people-register 
 
 python Sistema/main.py
 ```
