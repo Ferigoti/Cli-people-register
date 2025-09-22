@@ -1,79 +1,113 @@
-from Sistema.library.interface import cabecalho
+import sqlite3
+from Sistema.library.interface import cabecalho, leiaint, linha
 from sys import exit
 
-def arquivoexiste(nome):
+# --- Variáveis Globais para o Banco de Dados ---
+DB_NAME = 'Sistema/cadastros.db'
+conexao = None
+cursor = None
+
+# --- Funções de Controle do Banco de Dados ---
+
+def iniciar_banco():
+    """
+    Conecta ao banco de dados e garante que a tabela 'pessoas' exista com as novas colunas.
+    """
+    global conexao, cursor
     try:
-        with open(nome, 'rt'):
-            return True
-    except FileNotFoundError:
-        return False
+        conexao = sqlite3.connect(DB_NAME)
+        cursor = conexao.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS pessoas (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                nascimento TEXT NOT NULL,
+                naturalidade TEXT NOT NULL,
+                telefone TEXT NOT NULL
+            );
+        """)
+    except sqlite3.Error as e:
+        print(f'\033[31mOcorreu um erro ao conectar ao banco de dados: {e}\033[m')
+        exit()
 
 
-def criararquivo(nome):
+def fechar_banco():
+    """Fecha a conexão com o banco de dados de forma segura."""
+    if conexao:
+        conexao.close()
+
+# --- Funções de Manipulação de Dados (CRUD) ---
+
+def lerarquivo():
+    """
+    Lê e exibe todas as pessoas cadastradas no banco de dados com os novos campos.
+    """
+    cabecalho('PESSOAS CADASTRADAS')
     try:
-        with open(nome, 'wt+'):
-            pass
-    except OSError:
-        print('Houve um ERRO na criação do arquivo!')
-    else:
-        print(f'Arquivo {nome} criado com sucesso!')
+        cursor.execute("SELECT id, nome, nascimento, naturalidade, telefone FROM pessoas")
+        pessoas = cursor.fetchall()
+        if not pessoas:
+            print("Nenhuma pessoa cadastrada no momento.")
+        else:
+            print(f'\033[33m{"ID":<4}{"NOME":<25}{"NASCIMENTO":<15}{"NATURALIDADE":<20}{"TELEFONE":<15}\033[m')
+            print(linha())
+            for pessoa in pessoas:
+                print(f'{pessoa[0]:<4}'
+                      f'\033[36m{pessoa[1]:<25}\033[m '
+                      f'{pessoa[2]:<15} '
+                      f'\033[32m{pessoa[3]:<20}\033[m '
+                      f'{pessoa[4]:<15}')
+    except sqlite3.Error as e:
+        print(f'\033[31mErro ao ler os dados: {e}\033[m')
 
 
-def lerarquivo(nome):
+def cadastrar(nome, nascimento, naturalidade, telefone):
+    """
+    Cadastra uma nova pessoa no banco de dados
+    """
     try:
-        with open(nome, 'rt') as a:
-            cabecalho('PESSOAS CADASTRADAS')
-            for linha in a:
-                dado = linha.strip().split(';')
-                if len(dado) == 2:
-                    nome, idade = dado
-                    print(f'\033[36m{nome:<30}\033[m \033[32m{idade:>3} anos\033[m')
-    except FileNotFoundError:
-        print('Arquivo não encontrado.')
-    except Exception as e:
-        print(f'Erro ao ler o arquivo: {e}')
-
-
-def cadastrar(arq, nome, idade):
-    try:
-        with open(arq, 'a') as a:
-            a.write(f'{nome};{idade}\n')
-    except OSError:
-        print('Houve um ERRO na abertura do arquivo!')
-    except Exception as e:
-        print(f'Erro ao gravar os dados: {e}')
-    else:
+        cursor.execute("""
+            INSERT INTO pessoas (nome, nascimento, naturalidade, telefone) 
+            VALUES (?, ?, ?, ?)
+        """, (nome, nascimento, naturalidade, telefone))
+        conexao.commit()
         print(f'Novo registro de {nome} adicionado.')
+    except sqlite3.Error as e:
+        print(f'\033[31mOcorreu um erro ao cadastrar: {e}\033[m')
 
 
-def removercadastro(arq):
+def removercadastro():
+    """
+    Mostra as pessoas cadastradas com seus IDs e remove a selecionada.
+    (Esta função não precisa de grandes alterações)
+    """
+    cabecalho('REMOVER CADASTRO')
+    lerarquivo()
+    print(linha())
+    
     try:
-        with open(arq, 'rt') as arquivo:
-            linhas = arquivo.readlines()
-        if not linhas:
-            print('\033[33mNão há cadastros para remover.\033[m')
+        cursor.execute("SELECT COUNT(*) FROM pessoas")
+        if cursor.fetchone()[0] == 0:
             return
-        print('\033[36mPessoas cadastradas:\033[m')
-        for i, linha in enumerate(linhas):
-            nome, idade = linha.strip().split(';')
-            print(f'\033[33m{i + 1}\033[m - \033[34m{nome:<30}\033[m {idade:>3} anos')
-        print('-' * 42)
-        while True:
-            try:
-                escolha = int(input('\033[32mDigite o número do cadastro que deseja remover: \033[m'))
-                if 1 <= escolha <= len(linhas):
-                    break
-                else:
-                    print('\033[31mNúmero inválido. Tente novamente.\033[m')
-            except ValueError:
-                print('\033[31mDigite um número válido.\033[m')
-            except KeyboardInterrupt:
-                print('\n\033[31mEntrada de dados interrompida pelo usuário.\033[m')
-                exit()
-        nomeremovido, _ = linhas[escolha - 1].strip().split(';')
-        del linhas[escolha - 1]
-        with open(arq, 'wt') as arquivo:
-            arquivo.writelines(linhas)
-        print(f'\033[32mCadastro de "{nomeremovido}" removido com sucesso.\033[m')
-    except FileNotFoundError:
-        print('\033[31mArquivo não encontrado.\033[m')
+            
+        id_remover = leiaint('\033[32mDigite o ID do cadastro que deseja remover (0 para cancelar): \033[m')
+        if id_remover == 0:
+            print("\033[33mOperação cancelada.\033[m")
+            return
+
+        cursor.execute("SELECT nome FROM pessoas WHERE id = ?", (id_remover,))
+        resultado = cursor.fetchone()
+
+        if resultado:
+            nome_removido = resultado[0]
+            cursor.execute("DELETE FROM pessoas WHERE id = ?", (id_remover,))
+            conexao.commit()
+            if cursor.rowcount > 0:
+                print(f'\033[32mCadastro de "{nome_removido}" (ID: {id_remover}) removido com sucesso.\033[m')
+            else:
+                 print(f'\033[31mOcorreu um erro e o cadastro de ID {id_remover} não foi removido.\033[m')
+        else:
+            print(f'\033[31mERRO! Não existe um cadastro com o ID {id_remover}.\033[m')
+
+    except sqlite3.Error as e:
+        print(f'\033[31mOcorreu um erro ao remover o cadastro: {e}\033[m')
