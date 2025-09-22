@@ -1,59 +1,52 @@
 # 🧾 People Register / Cadastro de Pessoas
 
-## 📌 Sobre o Projeto (Português)
+## 📌 Sobre o Projeto
 
-Este projeto é um sistema simples para cadastro e gerenciamento de pessoas (nome e idade), desenvolvido durante o curso de Python do [Curso em Vídeo](https://www.cursoemvideo.com/), com melhorias e personalizações feitas por mim.
-
-## 📌 About the Project (English)
-
-This project is a simple system to register and manage people (name and age), developed during the Python course by [Curso em Vídeo](https://www.cursoemvideo.com/), with improvements and customizations made by me.
+Este projeto é um sistema de linha de comando (CLI) para cadastro e gerenciamento de pessoas. Desenvolvido originalmente durante o curso de Python do Curso em Vídeo, foi aprimorado para utilizar um banco de dados SQLite, tornando-o mais robusto e escalável. O sistema agora permite o cadastro de múltiplos dados, incluindo nome, data de nascimento, naturalidade e telefone.
 
 ---
 
-## 🚀 Funcionalidades / Features
+## 🚀 Funcionalidades
 
-- Listar pessoas cadastradas / List registered people  
-- Adicionar novas pessoas com nome e idade / Add new people with name and age  
-- Validação de entrada (ex: não aceita números no nome) / Input validation (e.g. no numbers in names)  
-- Dados salvos em arquivo texto (`Cadastros.txt`) / Data saved to a text file (`Cadastros.txt`)  
-- Menu simples e intuitivo no terminal / Simple and intuitive terminal menu  
+- Listar pessoas cadastradas: Exibe uma tabela organizada com ID, nome, nascimento, naturalidade e telefone.
+- Adicionar novas pessoas: Cadastra um novo registro com todos os dados.  
+- Remover um cadastro: Exclui uma pessoa do banco de dados de forma segura através de seu ID único.  
+- Validação de entrada: Garante que dados como nome e opções do menu sejam inseridos corretamente.
+- Persistência de dados com SQLite: Os dados são salvos em um banco de dados (`cadastros.db`), garantindo integridade e eficiência.
+- Menu simples e intuitivo: Toda a interação acontece através de um menu claro no terminal.
 
 ---
 
-## 🛠️ Tecnologias / Technologies
+## 🛠️ Tecnologias
 
 - Python 3  
-- Manipulação de arquivos (abrir, ler, escrever) / File handling (`open`, `read`, `write`)  
-- Funções e estrutura modular / Functions and modular structure  
+- SQLite 3 (através do módulo nativo `sqlite3`)
+- Estrutura de projeto modular
 
 ---
 
-## ▶️ Como Rodar (Português)
+## ▶️ Como Rodar
   
-```bash
+
+### 1. Clone o repositório
+```
 git clone https://github.com/Ferigoti/Cli-people-register 
-
+```
+### 2. Navegue até o diretório
+```
 cd Cli-people-register 
-
+```
+### 3. Execute o script principal
+```
 python main.py
 ```
 
-## ▶️ How to Run (English)
-```bash
-git clone https://github.com/Ferigoti/Cli-people-register
 
-cd Cli-people-register 
+📖 Créditos
 
-python main.py
-```
+Este projeto foi desenvolvido com base nos ensinamentos do curso de Python do Gustavo Guanabara (Curso em Vídeo) e foi posteriormente reestruturado e aprimorado por mim.
 
-📖 Créditos / Credits
 
-Este projeto foi desenvolvido durante o curso de Python do Gustavo Guanabara (Curso em Vídeo) e posteriormente melhorado por mim.
+🤝 Contato
 
-This project was developed during the Python course by Gustavo Guanabara (Curso em Vídeo) and later improved by me.
-
-🤝 Contato / Contact
-
-Fique à vontade para sugerir melhorias ou fazer perguntas!
-Feel free to suggest improvements or ask questions!
+Fique à vontade para sugerir melhorias, abrir uma issue ou entrar em contato!
