@@ -11,7 +11,7 @@ cursor = None
 
 def iniciar_banco():
     """
-    Conecta ao banco de dados e garante que a tabela 'pessoas' exista com as novas colunas.
+    Conecta ao banco de dados.
     """
     global conexao, cursor
     try:
@@ -40,7 +40,7 @@ def fechar_banco():
 
 def lerarquivo():
     """
-    Lê e exibe todas as pessoas cadastradas no banco de dados com os novos campos.
+    Lê e exibe todas as pessoas cadastradas no banco de dados.
     """
     cabecalho('PESSOAS CADASTRADAS')
     try:
@@ -79,7 +79,6 @@ def cadastrar(nome, nascimento, naturalidade, telefone):
 def removercadastro():
     """
     Mostra as pessoas cadastradas com seus IDs e remove a selecionada.
-    (Esta função não precisa de grandes alterações)
     """
     cabecalho('REMOVER CADASTRO')
     lerarquivo()
